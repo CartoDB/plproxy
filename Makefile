@@ -1,9 +1,9 @@
 EXTENSION  = plproxy
 
 # sync with NEWS, META.json, plproxy.control, debian/changelog
-DISTVERSION = 2.7
-EXTVERSION = 2.7.0
-UPGRADE_VERS = 2.3.0 2.4.0 2.5.0 2.6.0
+DISTVERSION = 2.8
+EXTVERSION = 2.8.0
+UPGRADE_VERS = 2.3.0 2.4.0 2.5.0 2.6.0 2.7.0
 
 # set to 1 to disallow functions containing SELECT
 NO_SELECT = 0
@@ -52,8 +52,8 @@ EXTSQL = sql/$(EXTENSION)--$(EXTVERSION).sql \
 
 # PostgreSQL version
 PGVER = $(shell $(PG_CONFIG) --version | sed 's/PostgreSQL //')
-PGMAJOR = $(shell echo $(PGVER) | cut -d'.' -f1 | sed -r "s/([0-9]+)(((beta)|(alpha)|(rc))[0-9]*)?/\1/")
-PGMINOR = $(shell echo $(PGVER) | cut -d'.' -f2 | sed -r "s/([0-9]+)(((beta)|(alpha)|(rc))[0-9]*)?/\1/")
+PGMAJOR = $(shell echo $(PGVER) | cut -d'.' -f1 | sed -r "s/([0-9]+)([^0-9].*)?/\1/")
+PGMINOR = $(shell echo $(PGVER) | cut -d'.' -f2 | sed -r "s/([0-9]+)([^0-9].*)?/\1/")
 
 SQLMED = $(shell test $(PGMAJOR) -lt 8 -o \( $(PGMAJOR) -eq 8 -a $(PGMINOR) -lt 4 \) && echo "false" || echo "true")
 PG91 = $(shell test $(PGMAJOR) -lt 9 -o \( $(PGMAJOR) -eq 9 -a $(PGMINOR) -lt 1 \) && echo "false" || echo "true")
