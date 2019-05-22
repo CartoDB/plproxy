@@ -4,6 +4,8 @@ EXTENSION  = plproxy
 DISTVERSION = 2.8
 EXTVERSION = 2.8.0
 UPGRADE_VERS = 2.3.0 2.4.0 2.5.0 2.6.0 2.7.0
+NEED_UPDATE_VALIDATOR_VERS = 2.3.0 2.4.0 2.5.0
+NO_UPDATE_VALIDATOR_VERS = 2.6.0 2.7.0
 
 # set to 1 to disallow functions containing SELECT
 NO_SELECT = 0
@@ -117,9 +119,13 @@ sql/$(EXTENSION)--$(EXTVERSION).sql: $(PLPROXY_SQL)
 	echo "create extension plproxy;" > sql/plproxy.sql 
 	cat $^ > $@
 
-$(foreach v,$(UPGRADE_VERS),sql/plproxy--$(v)--$(EXTVERSION).sql): sql/ext_update_validator.sql
+$(foreach v,$(NEED_UPDATE_VALIDATOR_VERS),sql/plproxy--$(v)--$(EXTVERSION).sql): sql/ext_update_validator.sql
 	@mkdir -p sql
 	cat $< >$@
+
+$(foreach v,$(NO_UPDATE_VALIDATOR_VERS),sql/plproxy--$(v)--$(EXTVERSION).sql):
+	@mkdir -p sql
+	touch $@
 
 sql/plproxy--unpackaged--$(EXTVERSION).sql: sql/ext_unpackaged.sql
 	@mkdir -p sql
